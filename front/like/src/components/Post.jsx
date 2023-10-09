@@ -26,7 +26,7 @@ function Post({
                 {likeIcon}
                 <span className="ms-1">{likes}</span>
               </div>
-              <button onClick={() => eliminarPost(id)} className="fa-solid fa-x bg-alert">Eleminar</button>
+              <button onClick={() => eliminarPost(id)} className="fa-solid fa-x bg-alert">X</button>
             </div>
           </div>
         </div>
