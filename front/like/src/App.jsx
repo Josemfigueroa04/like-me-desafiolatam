@@ -5,11 +5,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 
-const urlBaseServer = "http://localhost:3000";
+const urlBaseServer = "http://localhost:5000";
 
 function App() {
   const [titulo, setTitulo] = useState("");
-  const [imgSrc, setImgSRC] = useState("");
+  const [img, setImg] = useState(null);
   const [descripcion, setDescripcion] = useState("");
   const [posts, setPosts] = useState([]);
 
@@ -19,9 +19,20 @@ function App() {
   };
 
   const agregarPost = async () => {
-    const post = { titulo, url: imgSrc, descripcion };
-    await axios.post(urlBaseServer + "/posts", post);
-    getPosts();
+    const formData = new FormData();
+    formData.append("titulo", titulo);
+    formData.append("img", img);
+    formData.append("descripcion", descripcion);
+    try {
+      await axios.post(urlBaseServer + "/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      getPosts();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const like = async (id) => {
@@ -45,9 +56,10 @@ function App() {
         <div className="col-12 col-sm-4">
           <Form
             setTitulo={setTitulo}
-            setImgSRC={setImgSRC}
+            setImg={setImg}
             setDescripcion={setDescripcion}
             agregarPost={agregarPost}
+            urlBaseServer={urlBaseServer}
           />
         </div>
         <div className="col-12 col-sm-8 px-5 row posts align-items-start">
@@ -61,3 +73,5 @@ function App() {
 }
 
 export default App;
+
+
